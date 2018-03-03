@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yph.mapper.dict.SysDictTypeMapper">
+  <resultMap id="BaseResultMap" type="com.yph.entity.dict.SysDictType">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="flag" jdbcType="TINYINT" property="flag" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, name, flag, create_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_dict_type
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+
+  <!--分页查询 获取字典类型-->
+  <select id="findSysDictTypeListByPage" resultType="com.yph.entity.dict.SysDictType">
+    SELECT <include refid="Base_Column_List"/>
+    from sys_dict_type where flag ='0'
+    <if test="name != null and name!=''">
+     AND   name = #{name,jdbcType=VARCHAR}
+    </if>
+    <if test="createTime != null and createTime!=''">
+     and  create_time = #{createTime,jdbcType=TIMESTAMP}
+    </if>
+  </select>
+
+  <!--获取所有的字典类型-->
+  <select id="findAllSysDictTypeListByZtree" resultType="com.yph.entity.tree.ZtreeVo">
+    SELECT id ,name  from sys_dict_type where flag ='0' order by create_time DESC
+  </select>
+
+  <!--通过名称获取字典类型-->
+  <select id="findSysDictTypeOneByName" resultType="com.yph.entity.dict.SysDictType" parameterType="string">
+      SELECT <include refid="Base_Column_List"/> from sys_dict_type where flag ='0' and name = #{name,jdbcType=VARCHAR}
+  </select>
+
+  <!--物理删除-->
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from sys_dict_type
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+
+  <!--删除字典类型-->
+  <update id="delSysDictTypeById" parameterType="long">
+      UPDATE  sys_dict_type set flag ='1' WHERE where id = #{id,jdbcType=BIGINT}
+  </update>
+
+
+
+  <insert id="insert" parameterType="com.yph.entity.dict.SysDictType">
+    insert into sys_dict_type (id, name, flag, 
+      create_time)
+    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{flag,jdbcType=TINYINT}, 
+      #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yph.entity.dict.SysDictType">
+    insert into sys_dict_type
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="flag != null">
+        flag,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="flag != null">
+        #{flag,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yph.entity.dict.SysDictType">
+    update sys_dict_type
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="flag != null">
+        flag = #{flag,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yph.entity.dict.SysDictType">
+    update sys_dict_type
+    set name = #{name,jdbcType=VARCHAR},
+      flag = #{flag,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yph.mapper.autouser.AuthorizeMapper">
+
+    <!--获取对应的代理等级resultMap-->
+    <resultMap id="autoUser" type="com.yph.entity.po.AutoUserPo">
+        <result column="id" property="gradeId"/>
+        <result column="name" property="gradeName"/>
+    </resultMap>
+
+    <!--获取对应的用户ListUser的resultMap-->
+    <resultMap id="userList" type="com.yph.entity.po.UserListPo">
+        <id column="id" property="id"/>
+        <result column="super_id" property="superId"/>
+        <result column="grade_id" property="gradeId"/>
+        <result column="end_time" property="endTime"/>
+        <result column="step" property="step"/>
+        <result column="status" property="status"/>
+        <result column="user_id" property="userId"/>
+        <result column="open_id" property="openId"/>
+        <result column="info_id" property="infoId"/>
+        <result column="type" property="type"/>
+        <result column="create_time" property="createTime"/>
+        <result column="errormsg" property="errormsg"/>
+        <result column="cpadmin_id" property="cpadminId"/>
+        <result column="nick_name" property="nickName"/>
+        <result column="perform_total" property="performTotal"/>
+        <result column="storage_total" property="storageTotal"/>
+        <result column="referrer" property="referrer"/>
+        <result column="resource" property="resource"/>
+    </resultMap>
+
+
+    <!--获取对应的代理等级statement-->
+    <select id="getAgentGrade" resultMap="autoUser" parameterType="com.yph.entity.vo.AutoUserVo">
+      SELECT * FROM GRADE_LIST WHERE user_id=#{userId}
+    </select>
+
+    <!--获取对应的用户(管理员)信息-->
+    <select id="getUserList" resultMap="userList" parameterType="com.yph.entity.vo.AutoUserVo">
+        SELECT * FROM  user_list WHERE user_id=#{userId};
+        <if test="type == null">
+            AND type=#{type}
+        </if>
+    </select>
+
+</mapper>

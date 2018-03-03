@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yph.mapper.log.SysExceptionLogMapper">
+  <resultMap id="BaseResultMap" type="com.yph.entity.log.SysExceptionLog">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="calzz_name" jdbcType="VARCHAR" property="calzzName" />
+    <result column="method_name" jdbcType="VARCHAR" property="methodName" />
+    <result column="exception_msg" jdbcType="VARCHAR" property="exceptionMsg" />
+    <result column="flag" jdbcType="TINYINT" property="flag" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, calzz_name, method_name, exception_msg, flag, create_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_exception_log
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+
+
+  <select id="findSysExceptionLogList" resultType="com.yph.entity.log.SysExceptionLog">
+
+  </select>
+
+
+  <select id="findSysExceptionLogByPage" resultType="com.yph.entity.log.SysExceptionLog">
+
+
+  </select>
+
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from sys_exception_log
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+
+  <update id="delSysExceptionLogById">
+
+  </update>
+
+  <insert id="insert" parameterType="com.yph.entity.log.SysExceptionLog">
+    insert into sys_exception_log (id, calzz_name, method_name, 
+      exception_msg, flag, create_time
+      )
+    values (#{id,jdbcType=BIGINT}, #{calzzName,jdbcType=VARCHAR}, #{methodName,jdbcType=VARCHAR}, 
+      #{exceptionMsg,jdbcType=VARCHAR}, #{flag,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.yph.entity.log.SysExceptionLog">
+    insert into sys_exception_log
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="calzzName != null">
+        calzz_name,
+      </if>
+      <if test="methodName != null">
+        method_name,
+      </if>
+      <if test="exceptionMsg != null">
+        exception_msg,
+      </if>
+      <if test="flag != null">
+        flag,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="calzzName != null">
+        #{calzzName,jdbcType=VARCHAR},
+      </if>
+      <if test="methodName != null">
+        #{methodName,jdbcType=VARCHAR},
+      </if>
+      <if test="exceptionMsg != null">
+        #{exceptionMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="flag != null">
+        #{flag,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yph.entity.log.SysExceptionLog">
+    update sys_exception_log
+    <set>
+      <if test="calzzName != null">
+        calzz_name = #{calzzName,jdbcType=VARCHAR},
+      </if>
+      <if test="methodName != null">
+        method_name = #{methodName,jdbcType=VARCHAR},
+      </if>
+      <if test="exceptionMsg != null">
+        exception_msg = #{exceptionMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="flag != null">
+        flag = #{flag,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yph.entity.log.SysExceptionLog">
+    update sys_exception_log
+    set calzz_name = #{calzzName,jdbcType=VARCHAR},
+      method_name = #{methodName,jdbcType=VARCHAR},
+      exception_msg = #{exceptionMsg,jdbcType=VARCHAR},
+      flag = #{flag,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

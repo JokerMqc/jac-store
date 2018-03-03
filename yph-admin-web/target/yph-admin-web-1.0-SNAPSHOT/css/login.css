@@ -1,0 +1,97 @@
+.kit-login-box header {
+	height: 39px;
+	padding: 10px;
+	border-bottom: 1px solid rgba(0, 150, 136, 0.5);
+}
+
+.kit-login-box header h1 {
+	text-align: center;
+	font-size: 25px;
+	line-height: 40px;
+}
+
+.kit-login-box .kit-login-main {
+	height: 185px;
+}
+.kit-login-box .kit-login-main .layui-input:focus {
+	border-color: #009688 !important;
+}
+
+.kit-login-main .layui-form-item {
+	position: relative;
+}
+
+.kit-login-main .layui-form-item .kit-login-icon {
+	position: absolute;
+	color: #cccccc;
+	top: 10px;
+	left: 10px;
+}
+
+.kit-login-main .layui-form-item input {
+	padding-left: 34px;
+}
+
+.kit-login-box footer {
+	height: 85px;
+	padding: 10px 10px 0 10px;
+}
+
+.kit-login-box footer p {
+	line-height: 35px;
+	text-align: center;
+}
+
+.kit-pull-left {
+	float: left !important;
+}
+
+.kit-pull-right {
+	float: right !important;
+}
+
+.kit-clear {
+	clear: both;
+}
+
+.kit-login-remember {
+	line-height: 38px;
+}
+.kit-login-remember .layui-form-checkbox[lay-skin=primary] span {
+	color: #666;
+}
+
+.kit-login-remember .layui-form-checked[lay-skin=primary] i {
+	background-color: #2ca8ff;
+}
+
+.kit-login-remember .layui-form-switch {
+	margin-top: 0px;
+}
+
+.kit-login-code-box {
+	position: relative;
+	padding: 10px;
+}
+
+.kit-login-code-box input {
+	position: absolute;
+	width: 100px;
+}
+
+.kit-login-code-box img {
+	cursor: pointer;
+	position: absolute;
+	left: 115px;
+	height: 38px;
+}
+.wrapper{width:90%;margin:0 auto;}
+.login .logo{padding:20px 0}
+.login .logo img {height:60px;}
+.login .tip{line-height:100px;}
+.login .tel-icon{margin-right:5px;}
+.login .tel{font-size:16px;color:#666;}
+.login .bg{width:100%;height:700px;background:url("../img/bg.png") no-repeat;}
+.login .bg .imgBox{position:relative;height:100%;width:100%;}
+#loginbox { width: 300px;background: #fff;position: absolute;top: 50%;transform: translateY(-50%);right: 300px;padding: 30px;}
+

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yph.mapper.dict.SysDictResMapper">
+    <resultMap id="BaseResultMap" type="com.yph.entity.dict.SysDictRes">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="type_id" jdbcType="BIGINT" property="typeId"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="flag" jdbcType="TINYINT" property="flag"/>
+        <result column="code" jdbcType="VARCHAR" property="code"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, type_id, name, code,flag, create_time
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_dict_res
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <!--字典资源分页查询-->
+    <select id="findSysDictResListByPage" resultType="com.yph.entity.dict.SysDictRes">
+        SELECT
+        <include refid="Base_Column_List"/>
+        from sys_dict_res where flag= '0'
+        <if test="typeId != null">
+            and type_id = #{typeId,jdbcType=BIGINT}
+        </if>
+        <if test="name != null and name!=''">
+            and name = #{name,jdbcType=VARCHAR}
+        </if>
+        <if test="createTime != null and createTime !=''">
+            and create_time = #{createTime,jdbcType=TIMESTAMP}
+        </if>
+    </select>
+
+    <!--通过字典类型id 获取字典资源-->
+    <select id="findSysDictResListByTypeId" resultType="com.yph.entity.dict.SysDictRes" parameterType="long">
+        SELECT
+        <include refid="Base_Column_List"/>
+        from sys_dict_res where flag ='0' and type_id = #{typeId,jdbcType=BIGINT}
+    </select>
+
+    <!--获取字典资源 by ztree-->
+    <select id="findSysDictResListByZtree" resultType="com.yph.entity.tree.ZtreeVo" parameterType="long">
+      SELECT id,name  from sys_dict_res  where flag='0' and type_id = #{typeId,jdbcType=BIGINT}
+    </select>
+
+    <!--通过code获取字典资源-->
+    <select id="findSysDictResOneByCode" resultType="com.yph.entity.dict.SysDictRes" parameterType="string">
+      select <include refid="Base_Column_List"/> from sys_dict_res  where flag='0' and code = #{code,jdbcType=VARCHAR}
+
+    </select>
+
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from sys_dict_res
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+
+    <!--删除字典资源 通过Id-->
+    <delete id="delSysDictResById" parameterType="long">
+    UPDATE sys_dict_res set flag ='1' where id = #{typeId,jdbcType=BIGINT}
+  </delete>
+
+
+    <insert id="insert" parameterType="com.yph.entity.dict.SysDictRes">
+    insert into sys_dict_res (id, type_id, name, 
+      flag, create_time)
+    values (#{id,jdbcType=BIGINT}, #{typeId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, 
+      #{flag,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+
+    <insert id="insertSelective" parameterType="com.yph.entity.dict.SysDictRes">
+        insert into sys_dict_res
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="typeId != null">
+                type_id,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="flag != null">
+                flag,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="typeId != null">
+                #{typeId,jdbcType=BIGINT},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="flag != null">
+                #{flag,jdbcType=TINYINT},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.yph.entity.dict.SysDictRes">
+        update sys_dict_res
+        <set>
+            <if test="typeId != null">
+                type_id = #{typeId,jdbcType=BIGINT},
+            </if>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="flag != null">
+                flag = #{flag,jdbcType=TINYINT},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.yph.entity.dict.SysDictRes">
+    update sys_dict_res
+    set type_id = #{typeId,jdbcType=BIGINT},
+      name = #{name,jdbcType=VARCHAR},
+      flag = #{flag,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yph.mapper.schedule.ScheduleJobMapper">
+  <resultMap id="BaseResultMap" type="com.yph.entity.schedule.ScheduleJob">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="job_name" jdbcType="VARCHAR" property="jobName" />
+    <result column="bean_name" jdbcType="VARCHAR" property="beanName" />
+    <result column="method_name" jdbcType="VARCHAR" property="methodName" />
+    <result column="params" jdbcType="VARCHAR" property="params" />
+    <result column="cron_expression" jdbcType="VARCHAR" property="cronExpression" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="falg" jdbcType="TINYINT" property="flag" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id,job_name, bean_name, method_name, params, cron_expression, status, remark, create_time
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from schedule_job
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+
+  <!--根据Id查询-->
+  <select id="findScheduleJobById" resultType="com.yph.entity.schedule.ScheduleJob" parameterType="long">
+      SELECT <include refid="Base_Column_List"/>  from schedule_job where id=  #{id,jdbcType=BIGINT}
+  </select>
+
+  <!--获取list-->
+  <select id="findListScheduleJob" resultType="com.yph.entity.schedule.ScheduleJob" parameterType="map">
+    SELECT <include refid="Base_Column_List"/> from schedule_job
+    where flag='0'
+    <if test="id != null">
+    AND id=  #{id,jdbcType=BIGINT}
+    </if>
+    <if test="beanName != null">
+      AND bean_name =  #{beanName,jdbcType=VARCHAR}
+    </if>
+    <if test="methodName != null">
+      AND method_name = #{methodName,jdbcType=VARCHAR}
+    </if>
+    <if test="params != null">
+      AND params = #{params,jdbcType=VARCHAR}
+    </if>
+    <if test="cronExpression != null">
+      AND cron_expression =  #{cronExpression,jdbcType=VARCHAR}
+    </if>
+    <if test="status != null">
+      AND status =  #{status,jdbcType=TINYINT}
+    </if>
+    <if test="remark != null">
+      AND remark =    #{remark,jdbcType=VARCHAR}
+    </if>
+  </select>
+
+  <!--查询总记录数-->
+  <select id="queryTotal" resultType="java.lang.Integer">
+
+  </select>
+
+  <!--分页查询 -->
+  <select id="findScheduleJobByPage" resultType="com.yph.entity.schedule.ScheduleJob" parameterType="map">
+    SELECT <include refid="Base_Column_List"/>
+    from schedule_job where 1= 1 and flag ='0'
+    <if test="beanName != null">
+    and bean_name = #{beanName,jdbcType=VARCHAR}
+    </if>
+    <if test="methodName != null">
+      and method_name = #{methodName,jdbcType=VARCHAR}
+    </if>
+    <if test="params != null">
+      and  params=#{params,jdbcType=VARCHAR}
+    </if>
+    <if test="cronExpression != null">
+      and cron_expression=#{cronExpression,jdbcType=VARCHAR}
+    </if>
+    <if test="status != null">
+      and status=   #{status,jdbcType=TINYINT}
+    </if>
+    <if test="remark != null">
+      and  remark = #{remark,jdbcType=VARCHAR}
+    </if>
+    <if test="createTime != null and createTime!=''">
+      and  create_time =  #{createTime,jdbcType=VARCHAR}
+    </if>
+  </select>
+
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from schedule_job
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+
+  <!--批量删除-->
+  <delete id="deleteBatch">
+
+  </delete>
+
+  <!--删除-->
+  <update id="delScheduleJobById" parameterType="long">
+    Update schedule_job set flag ='1' where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.yph.entity.schedule.ScheduleJob">
+    insert into schedule_job (job_name, bean_name, method_name,
+      params, cron_expression, status,flag,
+      remark, create_time)
+    values (#{jobName,jdbcType=VARCHAR}, #{beanName,jdbcType=VARCHAR}, #{methodName,jdbcType=VARCHAR},
+      #{params,jdbcType=VARCHAR}, #{cronExpression,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, #{flag,jdbcType=TINYINT},
+      #{remark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.yph.entity.schedule.ScheduleJob">
+    insert into schedule_job
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="beanName != null">
+        bean_name,
+      </if>
+      <if test="methodName != null">
+        method_name,
+      </if>
+      <if test="params != null">
+        params,
+      </if>
+      <if test="cronExpression != null">
+        cron_expression,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="beanName != null">
+        #{beanName,jdbcType=VARCHAR},
+      </if>
+      <if test="methodName != null">
+        #{methodName,jdbcType=VARCHAR},
+      </if>
+      <if test="params != null">
+        #{params,jdbcType=VARCHAR},
+      </if>
+      <if test="cronExpression != null">
+        #{cronExpression,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yph.entity.schedule.ScheduleJob">
+    update schedule_job
+    <set>
+        <if test="jobName != null">
+            job_name = #{jobName,jdbcType=VARCHAR},
+        </if>
+      <if test="beanName != null">
+        bean_name = #{beanName,jdbcType=VARCHAR},
+      </if>
+      <if test="methodName != null">
+        method_name = #{methodName,jdbcType=VARCHAR},
+      </if>
+      <if test="params != null">
+        params = #{params,jdbcType=VARCHAR},
+      </if>
+      <if test="cronExpression != null">
+        cron_expression = #{cronExpression,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yph.entity.schedule.ScheduleJob">
+    update schedule_job
+    set bean_name = #{beanName,jdbcType=VARCHAR},
+      method_name = #{methodName,jdbcType=VARCHAR},
+      params = #{params,jdbcType=VARCHAR},
+      cron_expression = #{cronExpression,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT},
+      remark = #{remark,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <!--批量更新-->
+  <update id="updateBatch">
+
+  </update>
+
+  <!--更新状态-->
+  <update id="updateScheduleJobStatus" parameterType="int">
+    Update schedule_job set status =#{status}
+  </update>
+
+
+</mapper>

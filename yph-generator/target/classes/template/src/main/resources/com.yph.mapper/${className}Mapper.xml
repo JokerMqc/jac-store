@@ -1,0 +1,133 @@
+<#assign className = table.className>
+<#assign tableName = table.sqlName>
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="com.yph.${modulename}.mapper.${className}Mapper" >
+
+    <!--结果集-->
+  <resultMap id="BaseResultMap" type="com.yph.${modulename}.entity.${className}" >
+  	<#list table.columns as column>
+	  <#if column.pk>
+	    <id column="${column.sqlName}" property="${column.columnNameFirstLower}" jdbcType="${column.sqlTypeName}" />
+	  </#if>
+    </#list>
+  	<#list table.columns as column>
+	  <#if !column.pk>
+	    <result column="${column.sqlName}" property="${column.columnNameFirstLower}" jdbcType="${column.sqlTypeName}" />
+	  </#if>
+  </#list>
+  </resultMap>
+
+        <!--基本字段-->
+      <sql id="Base_Column_List" >
+        <#list table.columns as column>
+            <#if column.keyWord>`</#if>${column.sqlName}<#if column.keyWord>`</#if><#if column_has_next>,</#if>
+        </#list>
+      </sql>
+
+     <!--插入记录-->
+    <insert id="insert" parameterType="com.yph.${modulename}.entity.${className}">
+         insert into ${tableName}
+
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <#list table.columns as column>
+            <#if column.keyWord>`</#if>${column.sqlName}<#if column.keyWord>`</#if>,
+            </#list>
+         </trim>
+
+         <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <#list table.columns as column>
+                ${column.beginDelimiter} ${column.columnNameFirstLower},jdbcType=${column.sqlTypeName} },
+            </#list>
+         </trim>
+
+    </insert>
+
+
+    <!--通过id 删除-->
+    <update id="delById">
+         update ${tableName} set flag ='1' where
+         <#list table.columns as column>
+             <#if column.pk>
+                 <#if column.keyWord>`</#if>${column.sqlName}<#if column.keyWord>`</#if> = ${column.beginDelimiter} ${column.columnNameFirstLower},jdbcType=${column.sqlTypeName} }
+            </#if>
+        </#list>
+    </update>
+
+
+    <!--更新-->
+    <update id="update" parameterType="com.yph.${modulename}.entity.${className}" >
+        update ${tableName}
+        <set >
+            <#list table.columns as column>
+            <#if !column.pk>
+            <if test="${column.columnNameFirstLower} != null" >
+                <#if column.keyWord>`</#if>${column.sqlName}<#if column.keyWord>`</#if> = ${column.beginDelimiter} ${column.columnNameFirstLower},jdbcType=${column.sqlTypeName} },
+             </if>
+                </#if>
+                </#list>
+             </set>
+                where
+                <#list table.columns as column>
+                    <#if column.pk>
+                        <#if column.keyWord>`</#if>${column.sqlName}<#if column.keyWord>`</#if> = ${column.beginDelimiter} ${column.columnNameFirstLower},jdbcType=${column.sqlTypeName} }
+                    </#if>
+                </#list>
+     </update>
+
+
+    <!--根据 实体条件查询-->
+    <select id="findOneByParams" resultMap="BaseResultMap" parameterType="com.yph.${modulename}.entity.${className}">
+       select  <include refid="Base_Column_List"/> from ${tableName}  where flag ='0'
+       <#list table.columns as column>
+           <if test="${column.columnNameFirstLower} != null" >
+               and <#if column.keyWord>`</#if>${column.sqlName}<#if column.keyWord>`</#if> = ${column.beginDelimiter} ${column.columnNameFirstLower},jdbcType=${column.sqlTypeName} }
+            </if>
+        </#list>
+    </select>
+
+    <!--根据id查询-->
+    <select id="findOneById" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/> from ${tableName} where flag ='0' and
+        <#list table.columns as column>
+            <#if column.pk>
+            <#if column.keyWord>`</#if>${column.sqlName}<#if column.keyWord>`</#if> = ${column.beginDelimiter} ${column.columnNameFirstLower},jdbcType=${column.sqlTypeName} }
+             </#if>
+        </#list>
+    </select>
+
+    <!--查询列表-->
+    <select id="findByList" resultMap="BaseResultMap" parameterType="com.yph.${modulename}.entity.${className}">
+         select  <include refid="Base_Column_List" /> from ${tableName}  where flag ='0'
+         <#list table.columns as column>
+             <if test="${column.columnNameFirstLower} != null" >
+                 and <#if column.keyWord>`</#if>${column.sqlName}<#if column.keyWord>`</#if> = ${column.beginDelimiter} ${column.columnNameFirstLower},jdbcType=${column.sqlTypeName} }
+            </if>
+        </#list>
+    </select>
+
+    <!--查询列表 通过条件-->
+    <select id="findByParams" resultMap="BaseResultMap" parameterType="map">
+        select  <include refid="Base_Column_List" /> from ${tableName}  where flag ='0'
+        <#list table.columns as column>
+            <if test="${column.columnNameFirstLower} != null" >
+                and <#if column.keyWord>`</#if>${column.sqlName}<#if column.keyWord>`</#if> = ${column.beginDelimiter} ${column.columnNameFirstLower},jdbcType=${column.sqlTypeName} }
+            </if>
+        </#list>
+    </select>
+
+
+    <!--获取总条数-->
+      <select id="getTotal" resultType="java.lang.Integer"  parameterType="com.yph.${modulename}.entity.${className}" >
+        select count(1) from ${tableName}
+        <where>
+            <#list table.columns as column>
+                <if test="${column.columnNameFirstLower} != null" >
+                   and <#if column.keyWord>`</#if>${column.sqlName}<#if column.keyWord>`</#if> = ${column.beginDelimiter} ${column.columnNameFirstLower},jdbcType=${column.sqlTypeName} }
+                </if>
+             </#list>
+        </where>
+      </select>
+
+
+</mapper>

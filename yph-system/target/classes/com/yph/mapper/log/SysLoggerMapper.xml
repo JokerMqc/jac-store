@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="com.yph.mapper.log.SysLoggerMapper" >
+
+    <!--结果集-->
+  <resultMap id="BaseResultMap" type="com.yph.entity.log.SysLogger" >
+	    <id column="id" property="id" jdbcType="BIGINT" />
+	    <result column="name" property="name" jdbcType="VARCHAR" />
+	    <result column="ip" property="ip" jdbcType="VARCHAR" />
+	    <result column="method" property="method" jdbcType="VARCHAR" />
+	    <result column="params" property="params" jdbcType="VARCHAR" />
+	    <result column="flag" property="flag" jdbcType="TINYINT" />
+	    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+        <!--基本字段-->
+      <sql id="Base_Column_List" >
+            id,
+            `name`,
+            ip,
+            `method`,
+            params,
+            flag,
+            create_time
+      </sql>
+
+     <!--插入记录-->
+    <insert id="insert" parameterType="com.yph.entity.log.SysLogger">
+         insert into sys_logger
+
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            id,
+            `name`,
+            ip,
+            `method`,
+            params,
+            flag,
+            create_time,
+         </trim>
+
+         <trim prefix="values (" suffix=")" suffixOverrides="," >
+                #{ id,jdbcType=BIGINT },
+                #{ name,jdbcType=VARCHAR },
+                #{ ip,jdbcType=VARCHAR },
+                #{ method,jdbcType=VARCHAR },
+                #{ params,jdbcType=VARCHAR },
+                #{ flag,jdbcType=TINYINT },
+                #{ createTime,jdbcType=TIMESTAMP },
+         </trim>
+
+    </insert>
+
+
+    <!--通过id 删除-->
+    <update id="delById">
+         update sys_logger set flag ='1' where
+                 id = #{ id,jdbcType=BIGINT }
+    </update>
+
+
+    <!--更新-->
+    <update id="update" parameterType="com.yph.entity.log.SysLogger" >
+        update sys_logger
+        <set >
+            <if test="name != null" >
+                `name` = #{ name,jdbcType=VARCHAR },
+             </if>
+            <if test="ip != null" >
+                ip = #{ ip,jdbcType=VARCHAR },
+             </if>
+            <if test="method != null" >
+                `method` = #{ method,jdbcType=VARCHAR },
+             </if>
+            <if test="params != null" >
+                params = #{ params,jdbcType=VARCHAR },
+             </if>
+            <if test="flag != null" >
+                flag = #{ flag,jdbcType=TINYINT },
+             </if>
+            <if test="createTime != null" >
+                create_time = #{ createTime,jdbcType=TIMESTAMP },
+             </if>
+             </set>
+                where
+                        id = #{ id,jdbcType=BIGINT }
+     </update>
+
+
+    <!--根据 实体条件查询-->
+    <select id="findOneByParams" resultMap="BaseResultMap" parameterType="com.yph.entity.log.SysLogger">
+       select  <include refid="Base_Column_List"/> from sys_logger  where flag ='0'
+           <if test="id != null" >
+               and id = #{ id,jdbcType=BIGINT }
+            </if>
+           <if test="name != null" >
+               and `name` = #{ name,jdbcType=VARCHAR }
+            </if>
+           <if test="ip != null" >
+               and ip = #{ ip,jdbcType=VARCHAR }
+            </if>
+           <if test="method != null" >
+               and `method` = #{ method,jdbcType=VARCHAR }
+            </if>
+           <if test="params != null" >
+               and params = #{ params,jdbcType=VARCHAR }
+            </if>
+           <if test="flag != null" >
+               and flag = #{ flag,jdbcType=TINYINT }
+            </if>
+           <if test="createTime != null" >
+               and create_time = #{ createTime,jdbcType=TIMESTAMP }
+            </if>
+    </select>
+
+    <!--根据id查询-->
+    <select id="findOneById" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/> from sys_logger where flag ='0' and
+            id = #{ id,jdbcType=BIGINT }
+    </select>
+
+    <!--查询列表-->
+    <select id="findByList" resultMap="BaseResultMap" >
+         select  <include refid="Base_Column_List" /> from sys_logger  where flag ='0'
+             <if test="id != null" >
+                 and id = #{ id,jdbcType=BIGINT }
+            </if>
+             <if test="name != null" >
+                 and `name` = #{ name,jdbcType=VARCHAR }
+            </if>
+             <if test="ip != null" >
+                 and ip = #{ ip,jdbcType=VARCHAR }
+            </if>
+             <if test="method != null" >
+                 and `method` = #{ method,jdbcType=VARCHAR }
+            </if>
+             <if test="params != null" >
+                 and params = #{ params,jdbcType=VARCHAR }
+            </if>
+             <if test="flag != null" >
+                 and flag = #{ flag,jdbcType=TINYINT }
+            </if>
+             <if test="createTime != null" >
+                 and create_time = #{ createTime,jdbcType=TIMESTAMP }
+            </if>
+    </select>
+
+    <!--查询列表 通过条件-->
+    <select id="findByParams" resultMap="BaseResultMap" parameterType="map">
+        select  <include refid="Base_Column_List" /> from sys_logger  where flag ='0'
+            <if test="id != null" >
+                and id = #{ id,jdbcType=BIGINT }
+            </if>
+            <if test="name != null" >
+                and `name` = #{ name,jdbcType=VARCHAR }
+            </if>
+            <if test="ip != null" >
+                and ip = #{ ip,jdbcType=VARCHAR }
+            </if>
+            <if test="method != null" >
+                and `method` = #{ method,jdbcType=VARCHAR }
+            </if>
+            <if test="params != null" >
+                and params = #{ params,jdbcType=VARCHAR }
+            </if>
+            <if test="flag != null" >
+                and flag = #{ flag,jdbcType=TINYINT }
+            </if>
+            <if test="createTime != null" >
+                and create_time = #{ createTime,jdbcType=TIMESTAMP }
+            </if>
+    </select>
+
+
+    <!--获取总条数-->
+      <select id="getTotal" resultType="java.lang.Integer"  parameterType="com.yph.entity.log.SysLogger" >
+        select count(1) from sys_logger
+        <where>
+                <if test="id != null" >
+                   and id = #{ id,jdbcType=BIGINT }
+                </if>
+                <if test="name != null" >
+                   and `name` = #{ name,jdbcType=VARCHAR }
+                </if>
+                <if test="ip != null" >
+                   and ip = #{ ip,jdbcType=VARCHAR }
+                </if>
+                <if test="method != null" >
+                   and `method` = #{ method,jdbcType=VARCHAR }
+                </if>
+                <if test="params != null" >
+                   and params = #{ params,jdbcType=VARCHAR }
+                </if>
+                <if test="flag != null" >
+                   and flag = #{ flag,jdbcType=TINYINT }
+                </if>
+                <if test="createTime != null" >
+                   and create_time = #{ createTime,jdbcType=TIMESTAMP }
+                </if>
+        </where>
+      </select>
+
+
+</mapper>

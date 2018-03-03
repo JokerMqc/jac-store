@@ -1,0 +1,10 @@
+com\yph\controller\autouser\AuthorizeViewController.class
+com\yph\service\IAuthorizeService.class
+com\yph\controller\autouser\AuthorizeController.class
+com\yph\entity\po\AutoUserPo.class
+com\yph\entity\pojo\UserListPojo.class
+com\yph\entity\po\UserListPo.class
+com\yph\mapper\autouser\AuthorizeMapper.class
+com\yph\service\impl\AuthorizeServiceImpl.class
+com\yph\entity\pojo\AutoUserPo.class
+com\yph\entity\vo\AutoUserVo.class

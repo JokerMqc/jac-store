@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yph.mapper.mail.SysEmailMapper">
+  <resultMap id="BaseResultMap" type="com.yph.entity.mail.SysEmail">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="from_email" jdbcType="VARCHAR" property="fromEmail" />
+    <result column="from_name" jdbcType="VARCHAR" property="fromName" />
+    <result column="to_emails" jdbcType="VARCHAR" property="toEmails" />
+    <result column="subject" jdbcType="VARCHAR" property="subject" />
+    <result column="context" jdbcType="VARCHAR" property="context" />
+    <result column="flag" jdbcType="TINYINT" property="flag" />
+    <result column="send_status" jdbcType="TINYINT" property="sendStatus" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, from_email, from_name, to_emails, subject, context,send_status, flag, create_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_email
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+
+  <!--分页查询-->
+  <select id="findMailListByPage" resultType="com.yph.entity.mail.SysEmail">
+    SELECT <include refid="Base_Column_List"/>
+    FROM sys_email where flag='0'
+    <if test="fromEmail != null">
+      and  from_email = #{fromEmail,jdbcType=VARCHAR}
+    </if>
+    <if test="fromName != null">
+     and from_name = #{fromName,jdbcType=VARCHAR}
+    </if>
+    <if test="toEmails != null">
+      and to_emails = #{toEmails,jdbcType=VARCHAR}
+    </if>
+    <if test="subject != null">
+      and subject = #{subject,jdbcType=VARCHAR}
+    </if>
+    <if test="context != null">
+      and context = #{context,jdbcType=VARCHAR}
+    </if>
+    <if test="createTime != null and createTime!=''">
+      and  create_time like concat(#{createTime},"%")
+    </if>
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from sys_email
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+
+
+  <insert id="insert" keyProperty="id" parameterType="com.yph.entity.mail.SysEmail">
+    insert into sys_email (id, from_email, from_name, 
+      to_emails, subject, context, 
+      flag, create_time)
+    values (#{id,jdbcType=BIGINT}, #{fromEmail,jdbcType=VARCHAR}, #{fromName,jdbcType=VARCHAR}, 
+      #{toEmails,jdbcType=VARCHAR}, #{subject,jdbcType=VARCHAR}, #{context,jdbcType=VARCHAR}, 
+      #{flag,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yph.entity.mail.SysEmail">
+    insert into sys_email
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="fromEmail != null">
+        from_email,
+      </if>
+      <if test="fromName != null">
+        from_name,
+      </if>
+      <if test="toEmails != null">
+        to_emails,
+      </if>
+      <if test="subject != null">
+        subject,
+      </if>
+      <if test="context != null">
+        context,
+      </if>
+      <if test="flag != null">
+        flag,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="fromEmail != null">
+        #{fromEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="fromName != null">
+        #{fromName,jdbcType=VARCHAR},
+      </if>
+      <if test="toEmails != null">
+        #{toEmails,jdbcType=VARCHAR},
+      </if>
+      <if test="subject != null">
+        #{subject,jdbcType=VARCHAR},
+      </if>
+      <if test="context != null">
+        #{context,jdbcType=VARCHAR},
+      </if>
+      <if test="flag != null">
+        #{flag,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yph.entity.mail.SysEmail">
+    update sys_email
+    <set>
+      <if test="fromEmail != null">
+        from_email = #{fromEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="fromName != null">
+        from_name = #{fromName,jdbcType=VARCHAR},
+      </if>
+      <if test="toEmails != null">
+        to_emails = #{toEmails,jdbcType=VARCHAR},
+      </if>
+      <if test="subject != null">
+        subject = #{subject,jdbcType=VARCHAR},
+      </if>
+      <if test="context != null">
+        context = #{context,jdbcType=VARCHAR},
+      </if>
+      <if test="flag != null">
+        flag = #{flag,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yph.entity.mail.SysEmail">
+    update sys_email
+    set from_email = #{fromEmail,jdbcType=VARCHAR},
+      from_name = #{fromName,jdbcType=VARCHAR},
+      to_emails = #{toEmails,jdbcType=VARCHAR},
+      subject = #{subject,jdbcType=VARCHAR},
+      context = #{context,jdbcType=VARCHAR},
+      flag = #{flag,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
